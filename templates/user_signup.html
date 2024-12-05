@@ -1,0 +1,103 @@
+{% load static %}
+{% block body %}
+{% include 'Navigration.html' %}
+
+
+ <script>
+        function checkpass() {
+
+            const pwd = document.getElementById("pwd").value;
+            const cpwd = document.getElementById("cpwd").value;
+
+
+            if (pwd !== cpwd) {
+                alert("Password and Confirm Password fields do not match");
+                document.getElementById("cpwd").focus();
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+<marquee style="font-family: Monotype Corsiva; font-size:25px; color:darkcyan; background-color:black;">
+    User Signup
+</marquee>
+
+
+    <form class="container mt-5" method="POST" enctype="multipart/form-data" name="signup" onsubmit="return checkpass();">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="fname">First Name</label>
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter First Name" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="lname">Last Name</label>
+            <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter Last Name" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="contact">Contact</label>
+            <input type="number" class="form-control" id="contact" name="contact" placeholder="Enter contact number" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="email">Email ID</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="pwd">Password</label>
+            <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Enter Password" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="cpwd">Confirm Password</label>
+            <input type="password" class="form-control" id="cpwd" name="cpwd" placeholder="Enter Password again" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Gender</label>
+            <div style="border:1px solid lightgrey; padding:6px; border-radius:6px;">
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline1" name="gender" class="custom-control-input" value="Male">
+                <label class="custom-control-label" for="customRadioInline1">Male</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline2" name="gender" class="custom-control-input" value="Female">
+                <label class="custom-control-label" for="customRadioInline2">Female</label>
+            </div>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="image">Image</label>
+            <input type="file" class="form-control" id="image" name="image" required>
+        </div>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-primary my-3" style="width:200px">
+</form>
+
+
+{% if error == "No" %}
+<script>
+    alert("Signup Successfully");
+    window.location = ('{% url 'user_login' %}');
+</script>
+{% endif %}
+
+{% if error == "Yes" %}
+<script>
+    alert("Something went wrong, try Again......");
+</script>
+{% endif %}
+
+{% endblock body %}
