@@ -206,6 +206,48 @@ def change_status(request, pid):
     return render(request, "change_status.html", d)
 
 
+def change_passwordadmin(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    error = ""
+    if request.method == "POST":
+        current = request.POST['currentpassword']
+        new = request.POST['newpassword']
+        try:
+            u = User.objects.get(id=request.user.id)
+            if u.check_password(current):
+                u.set_password(new)
+                u.save()
+                error = "No"
+            else:
+                error="not"
+        except:
+            error = "Yes"
+    d = {'error': error}
+    return render(request, "change_passwordadmin.html", d)
+
+
+def change_passworduser(request):
+    if not request.user.is_authenticated:
+        return redirect('user_login')
+    error = ""
+    if request.method == "POST":
+        current = request.POST['currentpassword']
+        new = request.POST['newpassword']
+        try:
+            u = User.objects.get(id=request.user.id)
+            if u.check_password(current):
+                u.set_password(new)
+                u.save()
+                error = "No"
+            else:
+                error="not"
+        except:
+            error = "Yes"
+    d = {'error': error}
+    return render(request, "change_passworduser.html", d)
+
+
 def user_logout(request):
     logout(request)
     return redirect('user_login')
