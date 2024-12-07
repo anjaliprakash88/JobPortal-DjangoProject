@@ -3,7 +3,7 @@
 {% include 'admin_navigation.html' %}
 
 <marquee style="font-family: Monotype Corsiva; font-size:25px; color:darkcyan; background-color:black;">
-    View All Students Users
+    View All Recruiter
 </marquee>
 <hr>
 <div class="container">
@@ -15,7 +15,9 @@
         <th>Email</th>
         <th>contact</th>
         <th>Gender</th>
+        <th>Company</th>
         <th>Image</th>
+        <th>Status</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -27,8 +29,13 @@
         <td>{{ i.user.username }}</td>
         <td>{{ i.mobile }}</td>
         <td>{{ i.gender }}</td>
+        <td>{{ i.company }}</td>
         <td><img src="{{ i.image.url}}" style="width:90px; height:90px; border-radius:50%"></td>
-        <td><a href="{% url 'delete_user' i.user.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are You Sure?')">Delete</a></td>
+        <td>{{ i.status }}</td>
+        <td>
+            <a href="{% url 'change_status' i.id %}" class="btn btn-success btn-sm">Change Status</a>
+            <a href="{% url 'delete_recruiter' i.user.id %}" class="btn btn-danger btn-sm">delete</a>
+        </td>
 
     </tr>
     {% endfor %}

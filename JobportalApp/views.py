@@ -144,9 +144,17 @@ def view_user(request):
 def delete_user(request, pid):
     if not request.user.is_authenticated:
         return redirect('admin_login')
-    student = StudentUser.objects.get(id=pid)
+    student = User.objects.get(id=pid)
     student.delete()
     return redirect('view_user')
+
+
+def delete_recruiter(request, pid):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    recruiter = User.objects.get(id=pid)
+    recruiter.delete()
+    return redirect('recruiter_all')
 
 
 def recruiter_pending(request):
@@ -165,6 +173,22 @@ def recruiter_accepted(request):
     return render(request, "recruiter_accepted.html", d)
 
 
+def recruiter_rejected(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    data = Recruiter.objects.filter(status='Reject')
+    d = {'data': data}
+    return render(request, "recruiter_rejected.html", d)
+
+
+def recruiter_all(request):
+    if not request.user.is_authenticated:
+        return redirect('admin_login')
+    data = Recruiter.objects.all()
+    d = {'data': data}
+    return render(request, "recruiter_all.html", d)
+
+
 def change_status(request, pid):
     if not request.user.is_authenticated:
         return redirect('admin_login')
@@ -177,7 +201,7 @@ def change_status(request, pid):
             recruiter.save()
             error = "No"
         except:
-            error="Yes"
+            error = "Yes"
     d = {'recruiter': recruiter, 'error': error}
     return render(request, "change_status.html", d)
 
