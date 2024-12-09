@@ -26,6 +26,23 @@ class Recruiter(models.Model):
         return self.user.username
 
 
+class Job(models.Model):
+    recruiter = models.ForeignKey(Recruiter, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    title = models.CharField(max_length=10)
+    salary = models.FloatField(max_length=100)
+    image = models.FileField(max_length=15)
+    description = models.CharField(max_length=300)
+    experience = models.CharField(max_length=50)
+    location = models.CharField(max_length=100)
+    skills = models.CharField(max_length=100)
+    creationdate = models.DateField()
+
+    def __str__(self):
+        return self.title
+
+
 class Applicant(models.Model):
     applicant_name = models.CharField(max_length=10)
     phone = models.CharField(max_length=10)
@@ -38,16 +55,3 @@ class Applicant(models.Model):
 
     def __str__(self):
         return self.users.applicant_name
-
-
-class Company(models.Model):
-    ceo_name = models.CharField(max_length=10)
-    phone = models.CharField(max_length=10)
-    image = models.ImageField(upload_to="")
-    type = models.CharField(max_length=15)
-    status = models.CharField(max_length=20)
-    company_name = models.CharField(max_length=100)
-    company_address = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.users.company_name

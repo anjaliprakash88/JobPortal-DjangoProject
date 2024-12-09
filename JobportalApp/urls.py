@@ -19,12 +19,14 @@ urlpatterns = [
     path('recruiter_login/', views.recruiter_login, name='recruiter_login'),
     path('recruiter_signup/', views.recruiter_signup, name='recruiter_signup'),
     path('recruiter_home/', views.recruiter_home, name='recruiter_home'),
+    path('change_passwordrecruiter/', views.change_passwordrecruiter, name='change_passwordrecruiter'),
     path('recruiter_pending/', views.recruiter_pending, name='recruiter_pending'),
     path('recruiter_accepted/', views.recruiter_accepted, name='recruiter_accepted'),
     path('recruiter_rejected/', views.recruiter_rejected, name='recruiter_rejected'),
     path('recruiter_all/', views.recruiter_all, name='recruiter_all'),
     path('delete_recruiter/<int:pid>', views.delete_recruiter, name='delete_recruiter'),
     path('delete_user/<int:pid>', views.delete_user, name='delete_user'),
+    path('add_job/', views.add_job, name='add_job'),
 
 
 

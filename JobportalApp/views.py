@@ -220,7 +220,7 @@ def change_passwordadmin(request):
                 u.save()
                 error = "No"
             else:
-                error="not"
+                error = "not"
         except:
             error = "Yes"
     d = {'error': error}
@@ -241,12 +241,38 @@ def change_passworduser(request):
                 u.save()
                 error = "No"
             else:
-                error="not"
+                error = "not"
         except:
             error = "Yes"
     d = {'error': error}
     return render(request, "change_passworduser.html", d)
 
+
+def change_passwordrecruiter(request):
+    if not request.user.is_authenticated:
+        return redirect('recruiter_login')
+    error = ""
+    if request.method == "POST":
+        current = request.POST['currentpassword']
+        new = request.POST['newpassword']
+        try:
+            u = User.objects.get(id=request.user.id)
+            if u.check_password(current):
+                u.set_password(new)
+                u.save()
+                error = "No"
+            else:
+                error = "not"
+        except:
+            error = "Yes"
+    d = {'error': error}
+    return render(request, "change_passwordrecruiter.html", d)
+
+
+def add_job(request):
+    if not request.user.is_authenticated:
+        return redirect('recruiter_login')
+    return render(request, "add_job.html")
 
 def user_logout(request):
     logout(request)
