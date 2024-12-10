@@ -27,6 +27,7 @@ urlpatterns = [
     path('delete_recruiter/<int:pid>', views.delete_recruiter, name='delete_recruiter'),
     path('delete_user/<int:pid>', views.delete_user, name='delete_user'),
     path('add_job/', views.add_job, name='add_job'),
+    path('job_list/', views.job_list, name='job_list'),
 
 
 

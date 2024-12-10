@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from datetime import date
 
 
 def index(request):
@@ -272,7 +273,36 @@ def change_passwordrecruiter(request):
 def add_job(request):
     if not request.user.is_authenticated:
         return redirect('recruiter_login')
-    return render(request, "add_job.html")
+    error =""
+    if request.method == 'POST':
+        jtitle = request.POST['jobtitle']
+        sdate = request.POST['startdate']
+        edate = request.POST['enddate']
+        salary = request.POST['salary']
+        logo = request.FILES['logo']
+        experience = request.POST['experience']
+        location = request.POST['location']
+        skills = request.POST['skills']
+        desc = request.POST['description']
+        user = request.user
+        recruiter = Recruiter.objects.get(user=user)
+        try:
+            Job.objects.create(recruiter=recruiter, start_date=sdate, end_date=edate, title=jtitle,
+                                           salary=salary, image=logo, description=desc, experience=experience,
+                                           location=location, skills=skills, creationdate=date.today())
+            error = "No"
+        except:
+            error = "yes"
+    d = {'error': error}
+
+    return render(request, "add_job.html", {'d': d})
+
+
+def job_list(request):
+    if not request.user.is_authenticated:
+        return redirect('recruiter_login')
+    return render(request, "job_list.html")
+
 
 def user_logout(request):
     logout(request)
