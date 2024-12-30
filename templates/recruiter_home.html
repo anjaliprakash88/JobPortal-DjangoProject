@@ -2,7 +2,94 @@
 {% block body %}
 {% include 'recruiter_navigation.html' %}
 
+<marquee style="font-family: Monotype Corsiva; font-size:25px; color:darkcyan; background-color:black;">
+    Recruiter Profile
+</marquee>
 
+<div class="container mt-5">
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-md-8">
+            <form method="POST" enctype="multipart/form-data" name="signup" onsubmit="return checkpass();">
+                {% csrf_token %}
 
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="fname">First Name</label>
+                        <input type="text" class="form-control" id="fname" name="fname" value="{{recruiter.user.first_name}}" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lname">Last Name</label>
+                        <input type="text" class="form-control" id="lname" name="lname" value="{{recruiter.user.last_name}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="contact">Contact</label>
+                        <input type="number" class="form-control" id="contact" name="contact" value="{{recruiter.mobile}}" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="company">Company</label>
+                        <input type="text" class="form-control" id="company" name="company" value="{{recruiter.company}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="email">Email ID</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{recruiter.user.username}}" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Gender</label>
+                        <div style="border:1px solid lightgrey; padding:6px; border-radius:6px;">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customRadioInline1" name="gender" class="custom-control-input" value="Male"
+                                {% if recruiter.gender == "Male" %}checked{% endif %}>
+                                <label class="custom-control-label" for="customRadioInline1">Male</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customRadioInline2" name="gender" class="custom-control-input" value="Female"
+                                {% if recruiter.gender == "Female" %}checked{% endif %}>
+                                <label class="custom-control-label" for="customRadioInline2">Female</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="image">Upload Image</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                    </div>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary my-3" style="width:200px">
+            </form>
+
+            {% if error == "No" %}
+            <script>
+                alert("Profile Updated Successfully");
+                window.location = ('{% url 'recruiter_home' %}');
+            </script>
+            {% endif %}
+
+            {% if error == "Yes" %}
+            <script>
+                alert("Something went wrong, try Again......");
+            </script>
+            {% endif %}
+        </div>
+
+        <!-- Image Display Section -->
+        <div class="col-md-4 text-center">
+            <h5 class="mb-4">Profile Image</h5>
+            {% if recruiter.image %}
+            <img src="{{ recruiter.image.url }}" class="img-fluid" alt="Profile Image" style="max-width: 300px; height:300px">
+            {% else %}
+            <p>No image uploaded</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {% endblock body %}

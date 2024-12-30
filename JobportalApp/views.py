@@ -99,7 +99,38 @@ def recruiter_signup(request):
 def user_home(request):
     if not request.user.is_authenticated:
         return redirect('user_login')
-    return render(request, "user_home.html")
+    user = request.user
+    student = StudentUser.objects.get(user=user)
+    error = ""
+    if request.method == 'POST':
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        gender = request.POST['gender']
+
+        student.user.first_name = fname
+        student.user.last_name = lname
+        student.mobile = contact
+        student.gender = gender
+        student.user.username = email
+        try:
+            student.save()
+            student.user.save()
+            error = "No"
+        except:
+            error = "yes"
+
+        try:
+            img = request.FILES['image']
+            student.image = img
+            student.save()
+            error = "No"
+        except:
+            pass
+
+    context = {'student': student, 'error': error}
+    return render(request, "user_home.html", context)
 
 
 def admin_home(request):
@@ -111,7 +142,38 @@ def admin_home(request):
 def recruiter_home(request):
     if not request.user.is_authenticated:
         return redirect('recruiter_login')
-    return render(request, "recruiter_home.html")
+    user = request.user
+    recruiter = Recruiter.objects.get(user=user)
+    error = ""
+    if request.method == 'POST':
+        fname = request.POST['fname']
+        lname = request.POST['lname']
+        email = request.POST['email']
+        contact = request.POST['contact']
+        gender = request.POST['gender']
+
+        recruiter.user.first_name = fname
+        recruiter.user.last_name = lname
+        recruiter.mobile = contact
+        recruiter.gender = gender
+        recruiter.user.username = email
+        try:
+            recruiter.save()
+            recruiter.user.save()
+            error = "No"
+        except:
+            error = "yes"
+
+        try:
+            img = request.FILES['image']
+            recruiter.image = img
+            recruiter.save()
+            error = "No"
+        except:
+            pass
+
+    context = {'recruiter': recruiter, 'error': error}
+    return render(request, "recruiter_home.html", context)
 
 
 def user_signup(request):
@@ -273,7 +335,7 @@ def change_passwordrecruiter(request):
 def add_job(request):
     if not request.user.is_authenticated:
         return redirect('recruiter_login')
-    error =""
+    error = ""
     if request.method == 'POST':
         jtitle = request.POST['jobtitle']
         sdate = request.POST['startdate']
@@ -288,8 +350,8 @@ def add_job(request):
         recruiter = Recruiter.objects.get(user=user)
         try:
             Job.objects.create(recruiter=recruiter, start_date=sdate, end_date=edate, title=jtitle,
-                                           salary=salary, image=logo, description=desc, experience=experience,
-                                           location=location, skills=skills, creationdate=date.today())
+                               salary=salary, image=logo, description=desc, experience=experience,
+                               location=location, skills=skills, creationdate=date.today())
             error = "No"
         except:
             error = "yes"
@@ -301,7 +363,86 @@ def add_job(request):
 def job_list(request):
     if not request.user.is_authenticated:
         return redirect('recruiter_login')
-    return render(request, "job_list.html")
+    user = request.user
+    recruiter = Recruiter.objects.get(user=user)
+    data = Job.objects.filter(recruiter=recruiter)
+    d = {'data': data}
+    return render(request, "job_list.html", d)
+
+
+def edit_jobdetails(request, pid):
+    if not request.user.is_authenticated:
+        return redirect('recruiter_login')
+    error = ""
+    job = Job.objects.get(id=pid)
+    if request.method == 'POST':
+        jtitle = request.POST['jobtitle']
+        sdate = request.POST['startdate']
+        edate = request.POST['enddate']
+        salary = request.POST['salary']
+        experience = request.POST['experience']
+        location = request.POST['location']
+        skills = request.POST['skills']
+        desc = request.POST['description']
+        user = request.user
+        recruiter = Recruiter.objects.get(user=user)
+
+        job.title = jtitle
+        job.salary = salary
+        job.experience = experience
+        job.location = location
+        job.skills = skills
+        job.description = desc
+        try:
+            job.save()
+            error = "No"
+        except:
+            error = "Yes"
+        if sdate:
+            try:
+                job.start_date = sdate
+                job.save()
+            except:
+                pass
+        if edate:
+            try:
+                job.end_date = edate
+                job.save()
+            except:
+                pass
+
+    context = {'error': error, 'job': job}
+    return render(request, "edit_jobdetails.html", context)
+
+
+def change_companylogo(request, pid):
+    if not request.user.is_authenticated:
+        return redirect('recruiter_login')
+    error = ""
+    job = Job.objects.get(id=pid)
+    if request.method == 'POST':
+        change_image = request.FILES['logo']
+
+        job.image = change_image
+        try:
+            job.save()
+            error = "No"
+        except:
+            error = "Yes"
+    context = {'error': error, 'job': job}
+    return render(request, "change_companylogo.html", context)
+
+
+def latest_jobs(request):
+    data = Job.objects.all().order_by('-start_date')
+    d = {'data': data}
+    return render(request, "latest_jobs.html", d)
+
+
+def user_latestjobs(request):
+    data = Job.objects.all().order_by('-start_date')
+    d = {'data': data}
+    return render(request, "user_latestjobs.html", d)
 
 
 def user_logout(request):

@@ -43,15 +43,11 @@ class Job(models.Model):
         return self.title
 
 
-class Applicant(models.Model):
-    applicant_name = models.CharField(max_length=10)
-    phone = models.CharField(max_length=10)
-    email = models.EmailField()
-    image = models.ImageField(upload_to="images")
-    gender = models.CharField(max_length=10)
-    type = models.CharField(max_length=15)
-    edu_qualif = models.CharField(max_length=10)
-    experience = models.IntegerField()
+class Apply(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    student = models.ForeignKey(StudentUser, on_delete=models.CASCADE)
+    resume = models.FileField(null=True)
+    applydate = models.DateField()
 
     def __str__(self):
-        return self.users.applicant_name
+        return self.id

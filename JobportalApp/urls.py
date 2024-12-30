@@ -14,6 +14,7 @@ urlpatterns = [
     path('user_home/', views.user_home, name='user_home'),
     path('change_passworduser/', views.change_passworduser, name='change_passworduser'),
     path('view_user/', views.view_user, name='view_user'),
+    path('user_latestjobs/', views.user_latestjobs, name='user_latestjobs'),
 
 
     path('recruiter_login/', views.recruiter_login, name='recruiter_login'),
@@ -26,12 +27,15 @@ urlpatterns = [
     path('recruiter_all/', views.recruiter_all, name='recruiter_all'),
     path('delete_recruiter/<int:pid>', views.delete_recruiter, name='delete_recruiter'),
     path('delete_user/<int:pid>', views.delete_user, name='delete_user'),
+    path('edit_jobdetails/<int:pid>', views.edit_jobdetails, name='edit_jobdetails'),
+    path('change_companylogo/<int:pid>', views.change_companylogo, name='change_companylogo'),
     path('add_job/', views.add_job, name='add_job'),
     path('job_list/', views.job_list, name='job_list'),
 
 
 
 
+    path('latest_jobs/', views.latest_jobs, name='latest_jobs'),
     path('change_status/<int:pid>', views.change_status, name='change_status'),
     path('user_logout/', views.user_logout, name='user_logout'),
 ]
