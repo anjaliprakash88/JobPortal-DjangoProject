@@ -432,7 +432,6 @@ def change_companylogo(request, pid):
     context = {'error': error, 'job': job}
     return render(request, "change_companylogo.html", context)
 
-
 def latest_jobs(request):
     data = Job.objects.all().order_by('-start_date')
     d = {'data': data}
@@ -440,10 +439,21 @@ def latest_jobs(request):
 
 
 def user_latestjobs(request):
-    data = Job.objects.all().order_by('-start_date')
-    d = {'data': data}
+    job = Job.objects.all().order_by('-start_date')
+    user = request.user
+    student = StudentUser.objects.get(user=user)
+    data = Apply.objects.filter(student=student)
+    li = []
+    for i in data:
+        li.append(i.job.id)
+    d = {'job': job, 'li': li}
     return render(request, "user_latestjobs.html", d)
 
+
+def job_detail(request, pid):
+    job = Job.objects.get(id=pid)
+    d = {'job': job}
+    return render(request, "job_detail.html", d)
 
 def user_logout(request):
     logout(request)

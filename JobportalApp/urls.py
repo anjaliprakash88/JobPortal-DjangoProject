@@ -15,6 +15,7 @@ urlpatterns = [
     path('change_passworduser/', views.change_passworduser, name='change_passworduser'),
     path('view_user/', views.view_user, name='view_user'),
     path('user_latestjobs/', views.user_latestjobs, name='user_latestjobs'),
+    path('job_detail/<int:pid>', views.job_detail, name='job_detail'),
 
 
     path('recruiter_login/', views.recruiter_login, name='recruiter_login'),
